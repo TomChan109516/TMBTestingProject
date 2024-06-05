@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Transport Department</title>
+    <link rel="stylesheet" href="style.css" media="all" />
+    <style>
+        .center-align {
+            text-align: center
+        }
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <header class="clearfix">
+        </div>
+        <div id="Letter">
+            <h1 class="name center-align">Transport Department</h1>
+            <h2 class="description center-align"> Transport Department Vehicle Examination Complex (MOM Contractor) </h2>
+            <div class="description center-align"> 運輸署車輛檢驗中心（媽媽 承建商）</div>
+            <img style="float:right" src="C:\Users\abhiram.mangde\Documents\GitHub\VICSS\VICSS-Backend-API\SCS Backend API\SCS Backend API\Content\Image\QRcode.JPG" alt="" ; height="100" width="100">
+            <p class="center-align"> Road Traffic Ordience, Cap 374 </p>
+            <p class="center-align"> 道路交通條例（第 374 章）</p>
+            <h2 class="subheading center-align"> Vehicle Examination Appointment   [reprint]</h2>
+            <p class="subheading center-align"> 車輛檢驗預約   [轉載]</p>
+            <p>
+                This letter is confirmation of the vehcile examination appointment made in respect of
+                the below mentioned vehicle which together with its registration document and this letter
+                machine-receipted to show that the examination fee prescribed below, has been paid,
+                should be preseneted on the date of indicated below.
+            </p>
+            <p>
+                本信函是對下述車輛的車輛檢查預約的確認，連同其登記文件和機器接收的本信函，以表明下述規定的檢查費已支付，應在指定日期出示以下。
+            </p>
+            <table style='width:100%' column-spacing='2'>
+                <tr>
+                    <td>
+                        <span style='font-size: 14px; width:150px;'>The appointment shown below has been made for your vehicle</span>
+                        <p style='font-size: 14px;'>已為您的車輛進行瞭如下所示的預約</p>
+                    </td>
+                    <td>
+                        <span> AM1</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 14px;'>Vehicle Registration Mark</span>
+                        <p style='width:150px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 190px; top: -54px'>@vehicleInfo.RegMark</span>
+                    </td>
+                    <td>
+                        <div style='font-size: 14px;'>Appointment No.</div>
+                        <p style='width:100px;'>車輛登記號碼</p>
+                        <div style='font-size: 16px; font-weight: bold; position: relative; left: 156px; top: -54px'>@AppointmentNumber</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 14px;'>Chassis Number</span>
+                        <p style='width:150px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 190px; top: -54px'>@vehicleInfo.ChassisNumber</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 14px;'>Security Code</span>
+                        <p style='width:100px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 156px; top: -54px'>123456</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 14px;'>Vehicle Class</span>
+                        <p style='width:150px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 190px; top: -54px'>@vehicleInfo.VehicleClassId</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 14px;'>Time</span>
+                        <p style='width:100px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 156px; top: -54px'>@Time (1)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 14px;'>Examination Date (D-M-Y)</span>
+                        <p style='width:150px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 190px; top: -54px'>@Examination.Date</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 14px;'>Fee HKS</span>
+                        <p style='width:100px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 156px; top: -54px'>@ExamFee</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 14px;'>Reason for Examination</span>
+                        <p style='width:150px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 190px; top: -54px'>@PrimaryExamCode</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 14px;'>Lane No.</span>
+                        <p style='width:100px;'>車輛登記號碼</p>
+                        <span style='font-size: 16px; font-weight: bold; position: relative; left: 156px; top: -54px'>@Lane</span>
+                    </td>
+                </tr>
+            </table>
+
+            <div style='font-size: 14px;'> Examination Center: Transport Department Vehicle Examination Complex (MOM Contractor) </div>
+            <div style='font-size: 14px;'> G/F, 18 Sai Tso Wan Road, Tsing Yi, New Territories</div>
+            <p>考試中心：運輸署車輛考試中心（MOM 承辦商）</p>
+            <p>新界青衣西草灣路18號地下</p>
+            <p> Telephone no./電話號碼 3961 0350 </p>
+            <p style='font-size: 12px'> Please comply carefully with the advice on the reverse of this appointment letter. </p>
+            <p>請仔細遵守本任命書背面的建議</p>
+
+            <body>
+                <main>
+                    <div id="details" class="clearfix">
+                        <div id="client">
+                            <h2>No Bribery</h2>
+                            <p>嚴禁賄賂</p>
+                            <div>Date: @DateNow </div>
+                        </div>
+                </main>
+            </body>
+</html>

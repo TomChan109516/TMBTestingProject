@@ -1,0 +1,6 @@
+@LaneConfiguration_HostAddress = http://localhost:5041
+
+GET {{LaneConfiguration_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,149 @@
+name: DEV-UI-VICS-CD
+on:
+  push:
+    branches:
+      - development
+    paths:
+      - 'ui/vics/**'
+      - 'eks-deploy/ui-configmap.yaml'
+
+permissions: write-all
+      
+env:
+# set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+  ECR_REPOSITORY: ${{ vars.DEV_UI_VICS_ECR }}
+  EKS_TEST_CLUSTER: ${{ vars.EKS_TEST_CLUSTER }} 
+  
+  
+jobs: 
+# This workflow contains multiple jobs
+ CD:
+  name: CD deploy
+  runs-on: ubuntu-latest
+# The type of runner that the job will run on
+  steps:
+# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  - name: Checkout Repository
+    uses: actions/checkout@v3
+
+# Do a baseline branch analysis for SonarCloud
+  - name: Setup Node.js
+    uses: actions/setup-node@v2
+    with:
+       node-version: 18.8.0
+
+    # install applicaion dependencies
+  - name: Install dependencies
+    run: npm install --prefix ui/vics
+
+    # Test the react app
+  - name: Test
+    run: npm run coverage --prefix ui/vics
+
+  - name: Upload test results
+    uses: actions/upload-artifact@v4
+    with:
+       name: coverage
+       path: ui/vics/coverage
+
+  - name: Set up JDK 17
+    uses: actions/setup-java@v2
+    with:
+        java-version: '17'
+        distribution: 'adopt'
+        
+  - name: Set SonarCloud
+    uses: sonarsource/sonarcloud-github-action@master
+    env:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+       projectBaseDir: ui/vics
+          # Additional arguments for the sonarcloud scanner
+       args: >
+            -Dsonar.projectKey=atal-vicss-ui-vics
+            -Dsonar.host.url=https://sonarcloud.io/
+            -Dsonar.organization=atalvicss
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.inclusions=src/defineExamTypeAndAssociatedTestItems/**
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.qualitygate.wait=true
+
+  - name: Configure AWS credentials
+    uses: aws-actions/configure-aws-credentials@v1
+    with:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ secrets.AWS_REGION }}
+
+  - name: Login to Amazon ECR
+    run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+  - name: Print custom short Sha ID image tag
+    run: echo "IMAGE_TAG=ui-vics-${GITHUB_SHA::7}-${{ vars.DEV_VERSION }}" >> $GITHUB_ENV
+
+  - name: Build, tag, and push image to Amazon ECR      
+    run: |     
+      docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest ui/vics
+      docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
+  
+  - name: Get current time # A step to get the current time so we can use it in release name
+    uses: josStorer/get-current-time@v2
+    id: current-time
+    with:
+      timezone: "Asia/Hong_Kong"
+
+  - name: Set tag   # To give dynamic tags using the current date and time.
+    id: vars
+    run: echo ::set-output name=tag::$(date +'%Y-%m-%d-%H-%M-%S')
+
+  - name: Extract branch name  # A step to extract only branch name from github_ref
+    shell: bash
+    run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+    id: extract_branch
+  
+  - name: Export for UAT/Prod # A step to tag and export (as a tar file) the docker image
+    run: |
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG harbor.uattdtydomain.gov.hk/vicss/$ECR_REPOSITORY:latest
+        docker save harbor.uattdtydomain.gov.hk/vicss/$ECR_REPOSITORY:latest -o $ECR_REPOSITORY.tar
+                
+  - name: Create Release # A step to create a new Release in Github
+    id: create_release
+    uses: actions/create-release@v1
+    env:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+    with:
+      tag_name: ${{ steps.extract_branch.outputs.branch }}-${{ steps.vars.outputs.tag }}
+      release_name: ${{ vars.DEV_VERSION }} Release ${{ env.ECR_REPOSITORY }} ${{ steps.extract_branch.outputs.branch }} ${{ steps.current-time.outputs.time }}
+      body: |
+        ${{ github.ref }}
+      draft: false
+      prerelease: true
+  
+  - name: Upload Release Asset # A step to upload the Tar file to the previously created Release
+    id: upload-release-asset 
+    uses: actions/upload-release-asset@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+      asset_path: ${{ env.ECR_REPOSITORY }}.tar
+      asset_name: ${{ env.ECR_REPOSITORY }}.tar
+      asset_content_type: application/x-tar
+      
+  - name: Install kubectl
+    uses: azure/setup-kubectl@v1
+    with:
+      version: 'v1.28.0'
+    id: install
+
+  - name: Update kube config
+    run: aws eks update-kubeconfig --name $EKS_TEST_CLUSTER --region ${{ secrets.AWS_REGION }}
+
+  - name: Deploy image to Amazon EKScluster
+    run: |
+      kubectl apply -f eks-deploy/ui-configmap.yaml
+      kubectl replace --force -f eks-deploy/ui-vics-deployment.yaml
+      kubectl replace --force -f eks-deploy/ui-vics-service.yaml                   

@@ -1,0 +1,11 @@
+global using Xunit;
+global using System.Linq.Expressions;
+global using System.Net;
+global using AutoMapper;
+global using Moq;
+global using VICSS.Infrastructure.DataAccess.Context;
+global using VICSS.Infrastructure.DataAccess.Entities.Inspection;
+global using VICSS.Infrastructure.DataAccess.Repositories.Interface;
+global using VICSS.Service.Inspection.Domain;
+global using VICSS.Service.Inspection.EventHandlers;
+global using VICSS.Shared.Models.Common;

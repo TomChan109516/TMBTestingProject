@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vicss-inspection-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vicss-inspection-backend
+  template:
+    metadata:
+      labels:
+        app: vicss-inspection-backend
+    spec:
+      containers:
+        - name: vicss-inspection-backend
+          image: 788148918336.dkr.ecr.ap-east-1.amazonaws.com/sit-microservice-vicss-inspection:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/appsettings.Development.json
+            subPath: appsettings.Development.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: backend-configmap  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vicss-inspection-backend-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: vicss-inspection-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30033
+

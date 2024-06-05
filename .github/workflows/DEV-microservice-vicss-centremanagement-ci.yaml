@@ -1,0 +1,119 @@
+name: DEV-Microservices-CentreManagement-CI
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - development
+    paths:
+      - 'microservices/vicss/VICSS_Application/CentreManagement/**'
+      - 'eks-deploy/backend-configmap.yaml'
+
+env:
+# set variables and secrets here
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  solutionPath: microservices/vicss/VICSS_Application
+  testPath: microservices/vicss/VICSS_Application/Centre.UnitTest
+  ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+  ECR_REPOSITORY: ${{ vars.DEV_MICROSERVICE_VICSS_CENTREMANAGEMENT_ECR }}             
+
+jobs:
+# This workflow contains multiple jobs
+ CI:
+  name: CI deploy
+# The type of runner that the job will run on
+  runs-on: ubuntu-latest 
+  steps:
+# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+   - name: Checkout Repository
+     uses: actions/checkout@v3
+
+   # - name: Check for JIRA ID in PR Description and Title
+   #   run: |
+   #        PR_TITLE="${{ github.event.pull_request.title }}"
+   #        PR_DESCRIPTION="${{ github.event.pull_request.body }}"
+          
+   #        if [[ ! "$PR_TITLE" =~ ([A-Z]+-[0-9]+) ]]; then
+   #          echo "Error: No JIRA ID found in PR Title"
+   #          exit 1
+   #        fi
+   #        JIRA_ID_TITLE=${BASH_REMATCH[1]}
+   #        echo "Found JIRA ID in title: $JIRA_ID_TITLE"
+   #        echo "JIRA_ID_TITLE=$JIRA_ID_TITLE" >> $GITHUB_ENV
+          
+   #        if [[ ! "$PR_DESCRIPTION" =~ ([A-Z]+-[0-9]+) ]]; then
+   #          echo "Error: No JIRA ID found in PR Description"
+   #          exit 1
+   #        fi
+   #        JIRA_ID_DESCRIPTION=${BASH_REMATCH[1]}
+   #        echo "Found JIRA ID in description: $JIRA_ID_DESCRIPTION"
+   #        echo "JIRA_ID_DESCRIPTION=$JIRA_ID_DESCRIPTION" >> $GITHUB_ENV
+          
+   # - name: Validate JIRA ID
+   #   env:
+   #        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+   #        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+   #        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+   #   run: |
+   #        RESPONSE_TITLE=$(curl --user "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+   #          --url "$JIRA_BASE_URL/rest/api/2/issue/${{ env.JIRA_ID_TITLE }}" \
+   #          --write-out "%{http_code}" --silent --output /dev/null)
+   #        echo "RESPONSE_TITLE= $RESPONSE_TITLE"
+   #        if [[ "$RESPONSE_TITLE" -ne 200 ]]; then
+   #          echo "Error: JIRA ID ${{ env.JIRA_ID_TITLE }} in title does not exist"
+   #          exit 1
+   #        fi
+          
+   #        RESPONSE_DESCRIPTION=$(curl --user "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+   #          --url "$JIRA_BASE_URL/rest/api/2/issue/${{ env.JIRA_ID_DESCRIPTION }}" \
+   #          --write-out "%{http_code}" --silent --output /dev/null)
+   #        echo "RESPONSE_DESCRIPTION= $RESPONSE_DESCRIPTION"
+   #        if [[ "$RESPONSE_DESCRIPTION" -ne 200 ]]; then
+   #          echo "Error: JIRA ID ${{ env.JIRA_ID_DESCRIPTION }} in description does not exist"
+   #          exit 1
+   #        fi
+       
+   - name: Setup .Net core
+     uses: actions/setup-dotnet@v3
+     with:
+       dotnet-version: '8.0'
+
+   - name: Set up JDK 17
+     uses: actions/setup-java@v2
+     with:
+        java-version: '17'
+        distribution: 'adopt'
+        
+   - name: sonar setup
+     run: | 
+       dotnet tool install --global dotnet-sonarscanner  
+       dotnet tool install --global dotnet-coverage
+       dotnet tool install -g dotnet-reportgenerator-globaltool
+
+   - name: sonar scan begin
+     run: dotnet sonarscanner begin /k:"atal-vicss-ms-centremanagement" /o:"atalvicss" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.token=${{ secrets.SONAR_TOKEN }} /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.qualitygate.wait=true /d:sonar.projectBaseDir="${{ github.workspace }}/$solutionPath/CentreManagement" /d:sonar.exclusions="**/Domain/**/*,**/HostedServiceAbstract.cs,**/Program.cs, **/Mappers/**/*, **/appsettings.json, **/appsettings.*, **/Properties/**/*, **/Interface/**/*, **/nlog.config" /d:sonar.coverage.exclusions="**/Domain/**/*, **/HostedServiceAbstract.cs,**/Program.cs, **/Mappers/**/*, **/appsettings.json, **/appsettings.*, **/Properties/**/*, **/Interface/**/*, **/nlog.config"
+
+   
+   - name: build
+     run: dotnet build $solutionPath --no-incremental --configuration Release
+  
+   - name: Run Snyk to check for vulnerabilities
+     uses: snyk/actions/dotnet@master
+     continue-on-error: true
+     env:
+       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} 
+     with:
+       args: --all-projects ./$solutionPath/CentreManagement  
+
+   - name: test
+     run: |
+       dotnet-coverage collect -f xml -o coverage.xml dotnet test $testPath
+       reportgenerator -reports:coverage.xml -targetdir:.\report
+
+   - name: Upload test results
+     uses: actions/upload-artifact@v4
+     with:
+        name: centremanagement
+        path: .report/index.html
+   
+   - name: sonar scan end
+     run: dotnet sonarscanner end /d:sonar.token=${{ secrets.SONAR_TOKEN }}

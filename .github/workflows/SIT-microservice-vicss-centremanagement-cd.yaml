@@ -1,0 +1,106 @@
+name: SIT-Microservices-CentreManagement-CD
+on:
+  push:
+    branches:
+      - sit
+    paths:
+      - 'microservices/vicss/VICSS_Application/CentreManagement/**'
+      - 'eks-deploy/SIT-backend-configmap.yaml'
+
+permissions: write-all
+
+env:
+# set variables and secrets here
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  solutionPath: microservices/vicss/VICSS_Application
+  ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+  ECR_REPOSITORY: ${{ vars.SIT_MICROSERVICE_VICSS_CENTREMANAGEMENT_ECR }}
+  EKS_CLUSTER: ${{ vars.EKS_CLUSTER }}
+  SIT_EKS_NAMESPACE: ${{ vars.SIT_EKS_NAMESPACE }}                
+
+jobs:
+# This workflow contains multiple jobs
+ CD:
+  name: CD deploy
+# The type of runner that the job will run on
+  runs-on: ubuntu-latest
+  steps:
+# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+   - name: Checkout Repository
+     uses: actions/checkout@v3
+
+   - name: Configure AWS credentials
+     uses: aws-actions/configure-aws-credentials@v1
+     with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }} 
+        
+   - name: Login to Amazon ECR
+     run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }}  | docker login --username AWS --password-stdin $ECR_REGISTRY       
+
+   - name: Print custom short Sha ID image tag
+     run: echo "IMAGE_TAG=sit-centremanagement-${GITHUB_SHA::7}-${{ vars.SIT_VERSION }}" >> $GITHUB_ENV
+
+   - name: Build, tag, and push image to Amazon ECR   
+     run: |     
+       docker build -f $solutionPath/Dockerfile_centremanagement --build-arg ASPNETCORE_ENVIRONMENT=Development  --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest $solutionPath
+       docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
+    
+   - name: Get current time # A step to get the current time so we can use it in release name
+     uses: josStorer/get-current-time@v2
+     id: current-time
+     with:
+       timezone: "Asia/Hong_Kong"
+
+   - name: Set tag   # To give dynamic tags using the current date and time.
+     id: vars
+     run: echo ::set-output name=tag::$(date +'%Y-%m-%d-%H-%M-%S')
+
+   - name: Extract branch name  # A step to extract only branch name from github_ref
+     shell: bash
+     run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+     id: extract_branch
+  
+   - name: Export for UAT/Prod # A step to tag and export (as a tar file) the docker image
+     run: |
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG harbor.uattdtydomain.gov.hk/vicss/$ECR_REPOSITORY:latest
+        docker save harbor.uattdtydomain.gov.hk/vicss/$ECR_REPOSITORY:latest -o $ECR_REPOSITORY.tar
+                
+   - name: Create Release # A step to create a new Release in Github
+     id: create_release
+     uses: actions/create-release@v1
+     env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+     with:
+       tag_name: ${{ steps.extract_branch.outputs.branch }}-${{ steps.vars.outputs.tag }}
+       release_name: ${{ vars.SIT_VERSION }} Release ${{ env.ECR_REPOSITORY }} ${{ steps.extract_branch.outputs.branch }} ${{ steps.current-time.outputs.time }}
+       body: |
+         ${{ github.ref }}
+       draft: false
+       prerelease: true
+  
+   - name: Upload Release Asset # A step to upload the Tar file to the previously created Release
+     id: upload-release-asset 
+     uses: actions/upload-release-asset@v1
+     env:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     with:
+       upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+       asset_path: ${{ env.ECR_REPOSITORY }}.tar
+       asset_name: ${{ env.ECR_REPOSITORY }}.tar
+       asset_content_type: application/x-tar
+       
+   - name: Install kubectl
+     uses: azure/setup-kubectl@v1
+     with:
+       version: 'v1.28.0'
+     id: install
+
+   - name: Update kube config
+     run: aws eks update-kubeconfig --name $EKS_CLUSTER --region ${{ secrets.AWS_REGION }} 
+
+   - name: Deploy image to Amazon EKScluster
+     run: |
+       kubectl apply -f eks-deploy/SIT-backend-configmap.yaml --namespace=$SIT_EKS_NAMESPACE  
+       kubectl replace --force -f eks-deploy/SIT-centremanagement-deployment.yaml --namespace=$SIT_EKS_NAMESPACE

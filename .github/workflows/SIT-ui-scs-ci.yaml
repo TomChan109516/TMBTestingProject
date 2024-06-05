@@ -1,0 +1,90 @@
+name: SIT-UI-SCS-CI
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - sit
+    paths:
+      - 'ui/scs/**'
+      - 'eks-deploy/SIT-ui-configmap.yaml'
+
+jobs:
+# This workflow contains multiple jobs
+ CI:
+  name: CI deploy
+  runs-on: ubuntu-latest
+
+  steps:
+  # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+   - name: Checkout Repository
+     uses: actions/checkout@v2
+
+   - name: Fail if PR is not from development branch
+     run: |
+         if [[ "${{ github.head_ref }}" != "development" ]]; then
+            echo "Pull request must be from the 'development' branch"
+            exit 1
+         fi  
+
+   # - name: Check for JIRA ID in PR Description and Title
+   #   run: |
+   #        PR_TITLE="${{ github.event.pull_request.title }}"
+   #        PR_DESCRIPTION="${{ github.event.pull_request.body }}"
+          
+   #        if [[ ! "$PR_TITLE" =~ ([A-Z]+-[0-9]+) ]]; then
+   #          echo "Error: No JIRA ID found in PR Title"
+   #          exit 1
+   #        fi
+   #        JIRA_ID_TITLE=${BASH_REMATCH[1]}
+   #        echo "Found JIRA ID in title: $JIRA_ID_TITLE"
+   #        echo "JIRA_ID_TITLE=$JIRA_ID_TITLE" >> $GITHUB_ENV
+          
+   #        if [[ ! "$PR_DESCRIPTION" =~ ([A-Z]+-[0-9]+) ]]; then
+   #          echo "Error: No JIRA ID found in PR Description"
+   #          exit 1
+   #        fi
+   #        JIRA_ID_DESCRIPTION=${BASH_REMATCH[1]}
+   #        echo "Found JIRA ID in description: $JIRA_ID_DESCRIPTION"
+   #        echo "JIRA_ID_DESCRIPTION=$JIRA_ID_DESCRIPTION" >> $GITHUB_ENV
+          
+
+   # - name: Validate JIRA ID
+   #   env:
+   #        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+   #        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+   #        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+   #   run: |
+   #        RESPONSE_TITLE=$(curl --user "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+   #          --url "$JIRA_BASE_URL/rest/api/2/issue/${{ env.JIRA_ID_TITLE }}" \
+   #          --write-out "%{http_code}" --silent --output /dev/null)
+   #        echo "RESPONSE_TITLE= $RESPONSE_TITLE"
+   #        if [[ "$RESPONSE_TITLE" -ne 200 ]]; then
+   #          echo "Error: JIRA ID ${{ env.JIRA_ID_TITLE }} in title does not exist"
+   #          exit 1
+   #        fi
+          
+   #        RESPONSE_DESCRIPTION=$(curl --user "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+   #          --url "$JIRA_BASE_URL/rest/api/2/issue/${{ env.JIRA_ID_DESCRIPTION }}" \
+   #          --write-out "%{http_code}" --silent --output /dev/null)
+   #        echo "RESPONSE_DESCRIPTION= $RESPONSE_DESCRIPTION"
+   #        if [[ "$RESPONSE_DESCRIPTION" -ne 200 ]]; then
+   #          echo "Error: JIRA ID ${{ env.JIRA_ID_DESCRIPTION }} in description does not exist"
+   #          exit 1
+   #        fi
+   
+   - name: Setup Node.js
+     uses: actions/setup-node@v2
+     with:
+       node-version: 18.8.0
+
+    # install applicaion dependencies
+   - name: Install dependencies
+     run: npm install --prefix ui/scs
+      
+    # build the react app
+   - name: build
+     run: npm run build --prefix ui/scs
+
+    # Test the react app
+   - name: Unit Testing & coverage
+     run: npm run coverage --prefix ui/scs

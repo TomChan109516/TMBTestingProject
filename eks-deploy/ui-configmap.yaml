@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ui-configmap
+  namespace: default
+data:
+  SCS_ENV: "Dev"
+  SCS_BASE_URL: "http://18.167.19.156:30015/"
+  VICS_ENV: "Dev"
+  VICS_BASE_URL: "http://18.167.19.156:30015/"
+  Inspection_Service_Url: "http://18.167.19.156:30013/api/inspection/"

@@ -1,0 +1,6 @@
+@Artu_HostAddress = http://localhost:5192
+
+GET {{Artu_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

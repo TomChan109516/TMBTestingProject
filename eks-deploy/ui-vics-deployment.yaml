@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-vics-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui-vics
+  template:
+    metadata:
+      labels:
+        app: ui-vics
+    spec:
+      containers:
+        - name: ui-vics
+          image: 788148918336.dkr.ecr.ap-east-1.amazonaws.com/dev-ui-vics:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          envFrom:
+          - configMapRef:
+              name: ui-configmap

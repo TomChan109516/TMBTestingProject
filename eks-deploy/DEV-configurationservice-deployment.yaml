@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vicss-configurationservice-backend-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vicss-configurationservice-backend
+  template:
+    metadata:
+      labels:
+        app: vicss-configurationservice-backend
+    spec:
+      containers:
+        - name: vicss-configurationservice-backend
+          image: 788148918336.dkr.ecr.ap-east-1.amazonaws.com/dev-microservice-vicss-configurationservice:latest          
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/appsettings.Development.json
+            subPath: appsettings.Development.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: backend-configmap  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vicss-configurationservice-backend-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: vicss-configurationservice-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30018

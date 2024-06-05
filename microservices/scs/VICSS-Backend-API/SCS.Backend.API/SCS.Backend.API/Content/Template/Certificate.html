@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Transport Department</title>
+    <link rel="stylesheet" href="style.css" media="all" />
+    <style>
+        .center-align {
+            text-align: center
+        }
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <header class="clearfix">
+        </div>
+        <div id="Letter">
+            <h1 class="name center-align">Transport Department</h1>
+            <h2 class="description center-align"> Transport Department Vehicle Examination Complex (MOM Contractor) </h2>
+            <p class="center-align"> Road Traffic Ordience, Cap 374 </p>
+            <h2 class="subheading center-align"> Vehicle Examination Appointment </h2>
+
+            <p>
+                This letter is confirmation of the vehcile examination appointment made in respect of
+                the below mentioned vehicle which together with its registration document and this letter
+                machine-receipted to show that the examination fee prescribed below, has been paid,
+                should be preseneted on the date of indicated below.
+            </p>
+            <table style='width:100%' column-spacing='2'>
+                <tr>
+                    <td>
+                        <span style='font-size: 12px; width:150px;'>The appointment shown below has been made for your vehicle</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 12px; width: 150px; font-weight: 900;'>Bar Code AM1</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 12px; width:150px;'>Vehicle Registration Mark</span>
+                        <span style='font-weight:bold;'>@vehicleInfo.RegMark</span>
+                    </td>
+                    <td>
+                        <div style='font-size: 12px; width:100px;'>Appointment No.</div>
+                        <div style='font-weight:bold;'><b>@AppointmentNumber</b></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 12px; width:150px;'>Chassis Number</span>
+                        <span style='font-weight:bold;'>@vehicleInfo.ChassisNumber</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 12px; width: 100px;'>Security Code</span>
+                        <span style='font-weight:bold;'>123456</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 12px; width: 150px;'>Vehicle Class</span>
+                        <span style='font-weight:bold;'>@vehicleInfo.VehicleClassId</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 12px; width: 100px;'>Time</span>
+                        <span style='font-weight:bold;'>@Time (1)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 12px; width:150px;'>Examination Date (D-M-Y)</span>
+                        <span style='font-weight:bold;'>@Examination.Date</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 12px; width:100px;'>Fee HKS</span>
+                        <span style='font-weight:bold;'>@ExamFee</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style='font-size: 12px; width:150px;'>Reason for Examination</span>
+                        <span style='font-weight:bold;'>@PrimaryExamCode</span>
+                    </td>
+                    <td>
+                        <span style='font-size: 12px; width:100px;'>Lane No.</span>
+                        <span style='font-weight:900;'>@Lane</span>
+                    </td>
+                </tr>
+            </table>
+
+            <div style='font-size: 14px;'> Examination Center: Transport Department Vehicle Examination Complex (MOM Contractor) </div>
+            <div style='font-size: 14px; text-align:center;'> G/F, 18 Sai Tso Wan Road, Tsing Yi, New Territories</div>
+            <p> Telephone no. 3961 0350 </p>
+            <p style='font-size: 12px'> Please comply carefully with the advice on the reverse of this appointment letter. </p>
+
+            <body>
+                <main>
+                    <div id="details" class="clearfix">
+                        <div id="client">
+                            <h2>No Bribery</h2>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width:100px;'>Recieved the sum here stated: </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@ExamFee</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Date: </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@Date.Date</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Recieved the sum here stated: </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@ExamFee</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Vehicle Registration Mark/Chassis Number </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;width:150px;'>@vehicleInfo.RegMark</span>
+                                        <span style='font-weight:bold;'>/@vehicleInfo.ChassisNumber</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Reason For Examination </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@PrimaryExamCode</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Vehicle Class </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@vehicleInfo.VehicleClassId</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Appointment Number / Security Code </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@AppointmentNumber</span>
+                                        <span style='font-weight:bold;'>123456</span>
+                                    </td>
+                                    <td>
+                                        <span style='font-size: 12px; font-weight:bold;'>Please do not disclose it with others</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Examination Date (D-M-Y) & Time </span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@Date.Date</span>
+                                        <span style='font-weight:bold;'>@Date.Time</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style='font-size: 12px; width: 100px;'>Lane No.</span>
+                                    </td>
+                                    <td>
+                                        <span style='font-weight:bold;'>@Lane</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="center-align">PROOF OF RECEIPT-RETAINED BY THE RECEIVEING OFFICE</div>
+                            <div>Date: @DateNow </div>
+                        </div>
+                </main>
+            </body>
+</html>

@@ -1,0 +1,22 @@
+export const vehicleFormData = {
+    vehicleClass: 'Vehicle Class',
+    chassisNo: 'Chassis No',
+    vehicleId: 'Vehicle Id',
+    ceNumber: 'C&E No',
+    regMark: 'Reg. Mark',
+    currentRegMark: 'Current Reg. Mark',
+    pgvWeight: 'PGVWeight',
+    manuYear: 'Manu Year',
+    seatCapacity: 'Seat Capacity',
+    make: 'Make',
+    model: 'model',
+    modelCode: 'Model Code',
+    engineNumber: 'Engine Number',
+    licenceExpiry: 'Licence Expiry',
+    vico: 'VICO',
+    taNumber: 'TA No',
+    floatName: 'Float Name',
+    lantauVehicle: 'Lantau Vehicle',
+    inspectionOrder: 'Insp Order',
+    attribute: 'Attribute'
+}

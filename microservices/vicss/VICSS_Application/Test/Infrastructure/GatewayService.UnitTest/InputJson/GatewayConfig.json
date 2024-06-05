@@ -1,0 +1,283 @@
+[
+  {
+    "serviceName": "Vehicle",
+    "urlMappings": [
+      {
+        "apiUrl": "/vehicledetails",
+        "servicePath": "/api/vehicle"
+      },
+      {
+        "apiUrl": "/searchvehicle",
+        "servicePath": "/api/vehicle/searchvehicle"
+      },
+      {
+        "apiUrl": "/vehicleparticularsbyvehicleid",
+        "servicePath": "/api/vehicle/getvehicleparticularsbyvehicleid"
+      },
+      {
+        "apiUrl": "/vehiclemake",
+        "servicePath": "/api/vehicle/getvehiclemake"
+      },
+      {
+        "apiUrl": "/vehicleclasswithsubclass",
+        "servicePath": "/api/vehicle/getvehicleclasswithsubclass"
+      }
+    ]
+  },
+  {
+    "serviceName": "Centre",
+    "urlMappings": [
+      {
+        "apiUrl": "/centre",
+        "servicePath": "/api/centre/centre"
+      },
+      {
+        "apiUrl": "/getexamcodesforcentre",
+        "servicePath": "/api/centre/getexamcodesforcentre"
+      }
+    ]
+  },
+  {
+    "serviceName": "Inspection",
+    "urlMappings": [
+      {
+        "apiUrl": "/inspectiondetails",
+        "servicePath": "/api/inspection/inspectiondetailsbyinspectionid"
+      },
+      {
+        "apiUrl": "/vicslogin",
+        "servicePath": "/api/inspection/userlogin"
+      },
+      {
+        "apiUrl": "/getdetailsbyip",
+        "servicePath": "/api/inspection/getdetailsbyip"
+      },
+      {
+        "apiUrl": "/examSlotavailabilitydetailsfordaterange",
+        "servicePath": "/api/inspection/examSlotavailabilitydetailsfordaterange"
+      },
+      {
+        "apiUrl": "/getavailablequotaforselecteddate",
+        "servicePath": "/api/inspection/getavailablequotaforselecteddate"
+      },
+      {
+        "apiUrl": "/vicslogin",
+        "servicePath": "/api/inspection/userlogin"
+      },
+      {
+        "apiUrl": "/getdetailsbyip",
+        "servicePath": "/api/inspection/getdetailsbyip"
+      },
+      {
+        "apiUrl": "/saveohmtestresult",
+        "servicePath": "/api/inspection/saveohmtestresult"
+      },
+      {
+        "apiUrl": "/saveheadlamptestresult",
+        "servicePath": "/api/inspection/saveheadlamptestresult"
+      },
+      {
+        "apiUrl": "/savevisualtestresult",
+        "servicePath": "/api/inspection/savevisualtestresult"
+      },
+      {
+        "apiUrl": "/saveaxleweighttestresult",
+        "servicePath": "/api/inspection/saveaxleweighttestresult"
+      },
+      {
+        "apiUrl": "/getskiptestreason",
+        "servicePath": "/api/inspection/getskiptestreason"
+      },
+      {
+        "apiUrl": "/startinspection",
+        "servicePath": "/api/inspection/startinspection"
+      },
+      {
+        "apiUrl": "/starttest",
+        "servicePath": "/api/inspection/starttest"
+      },
+      {
+        "apiUrl": "/checkteststatus",
+        "servicePath": "/api/inspection/checkteststatus"
+      },
+      {
+        "apiUrl": "/getstatusofstations",
+        "servicePath": "/api/inspection/getstatusofstations"
+      },
+      {
+        "apiUrl": "/savebraketestresult",
+        "servicePath": "/api/inspection/savebraketestresult"
+      },
+      {
+        "apiUrl": "/savespeedometertestresult",
+        "servicePath": "/api/inspection/savespeedometertestresult"
+      },
+      {
+        "apiUrl": "/saveundercarriagetestresult",
+        "servicePath": "/api/inspection/saveundercarriagetestresult"
+      },
+      {
+        "apiUrl": "/saveexhausttestresult",
+        "servicePath": "/api/inspection/saveexhausttestresult"
+      },
+      {
+        "apiUrl": "/savetaximetertestresult",
+        "servicePath": "/api/inspection/savetaximetertestresult"
+      },
+      {
+        "apiUrl": "/savetiltingtestresult",
+        "servicePath": "/api/inspection/savetiltingtestresult"
+      },
+      {
+        "apiUrl": "/headlamptestconfiguration",
+        "servicePath": "/api/inspection/headlamptestconfiguration"
+      },
+      {
+        "apiUrl": "/headlamptestconfiguration",
+        "servicePath": "/api/inspection/headlamptestconfiguration"
+      },
+      {
+        "apiUrl": "/getalltestresults",
+        "servicePath": "/api/inspection/getalltestresults"
+      },
+      {
+        "apiUrl": "/getheadlampconfig",
+        "servicePath": "/api/inspection/getheadlampconfig"
+      },
+      {
+        "apiUrl": "/savealltestresult",
+        "servicePath": "/api/inspection/savealltestresult"
+      },
+      {
+        "apiUrl": "/searchskiptestreason",
+        "servicePath": "/api/inspection/searchskiptestreason"
+      },
+      {
+        "apiUrl": "/addupdateskiptestreason",
+        "servicePath": "/api/inspection/addupdateskiptestreason"
+      },
+      {
+        "apiUrl": "/activatedeactivateskiptestreason",
+        "servicePath": "/api/inspection/activatedeactivateskiptestreason"
+      },
+      {
+        "apiUrl": "/searchabortsuspendtestreason",
+        "servicePath": "/api/inspection/searchabortsuspendtestreason"
+      },
+      {
+        "apiUrl": "/addupdateabortsuspendtestreason",
+        "servicePath": "/api/inspection/addupdateabortsuspendtestreason "
+      },
+      {
+        "apiUrl": "/activatedeactivateabortsuspendtestreason",
+        "servicePath": "/api/inspection/activatedeactivateabortsuspendtestreason"
+      },
+      {
+        "apiUrl": "/getallunconfirmedlist",
+        "servicePath": "/api/inspection/getallunconfirmedlist"
+      },
+      {
+        "apiUrl": "/vicsgetdevicetype",
+        "servicePath": "/api/inspection/vicsgetdevicetype"
+      },
+      {
+        "apiUrl": "/addunconfirmedlist",
+        "servicePath": "/api/inspection/addunconfirmedlist"
+      },
+      {
+        "apiUrl": "/blankapi",
+        "servicePath": "/api/inspection/blankapi"
+      },
+      {
+        "apiUrl": "/disableAndReactiveMaintainEquipment",
+        "servicePath": "/api/inspection/disableAndReactiveMaintainEquipment"
+      },
+      {
+        "apiUrl": "/searchByIdMaintainEquipment",
+        "servicePath": "/api/inspection/searchByIdMaintainEquipment"
+      },
+      {
+        "apiUrl": "/getAllMaintainEquipmentData",
+        "servicePath": "/api/inspection/getAllMaintainEquipmentData"
+      },
+      {
+        "apiUrl": "/addUpdateMaintainequipment",
+        "servicePath": "/api/inspection/addUpdateMaintainequipment"
+      }
+
+
+    ]
+  },
+  {
+    "serviceName": "Appointment",
+    "urlMappings": [
+      {
+        "apiUrl": "/getvehicleinfo",
+        "servicePath": "/api/appointment/getvehicleinfo"
+      },
+      {
+        "apiUrl": "/recentappointmentforvehicle",
+        "servicePath": "/api/appointment/getrecentappointments"
+      },
+      {
+        "apiUrl": "/getappointmentdetails",
+        "servicePath": "/api/appointment/getappointmentdetails"
+      },
+      {
+        "apiUrl": "/createappointment",
+        "servicePath": "/api/appointment/createappointment"
+      },
+      {
+        "apiUrl": "/blankapiappointment",
+        "servicePath": "/api/appointment/blankapiappointment"
+      }
+    ]
+  },
+  {
+    "serviceName": "Lane",
+    "urlMappings": [
+      {
+        "apiUrl": "/getlanesbycentreid",
+        "servicePath": "/api/lane/getlanesbycentreid"
+      }
+    ]
+  },
+    {
+        "serviceName": "Artu",
+        "urlMappings": [
+            {
+                "apiUrl": "/addveepairing",
+                "servicePath": "/api/artu/addveepairing"
+            },
+            {
+                "apiUrl": "/deleteveepairing",
+                "servicePath": "/api/artu/deleteveepairing"
+            },
+            {
+                "apiUrl": "/toggleconnection",
+                "servicePath": "/api/artu/toggleconnection"
+            },
+            {
+                "apiUrl": "/getallentities",
+                "servicePath": "/api/artu/getallentities"
+            }
+        ]
+    },
+    {
+        "serviceName": "ConfigurationService",
+        "urlMappings": [
+            {
+                "apiUrl": "/searchsystemconfig",
+                "servicePath": "/api/configurationservice/searchsystemconfig"
+            },
+            {
+                "apiUrl": "/deletesystemconfig",
+                "servicePath": "/api/configurationservice/deletesystemconfig"
+            },
+            {
+                "apiUrl": "/addupdatesystemconfig",
+                "servicePath": "/api/configurationservice/addupdatesystemconfig"
+            }
+        ]
+    }
+]

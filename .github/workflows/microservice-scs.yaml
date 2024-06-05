@@ -1,0 +1,68 @@
+name: Microservices
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - development
+    paths:
+      - 'microservices/scs/**'
+
+env:
+# set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: ap-east-1                  
+# set this to your Amazon ECR repository name
+  ECR_REPOSITORY: tdvec-containers-repo
+
+jobs:
+# This workflow contains multiple jobs
+ CI:
+  name: CI deploy
+# The type of runner that the job will run on
+  runs-on: ubuntu-latest
+  env:
+     solutionPath: microservices/scs/VICSS-Backend-API/SCS.Backend.API
+     testPath: microservices/scs/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests
+  steps:
+# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+   - name: Checkout Repository
+     uses: actions/checkout@v3
+       
+   - name: Setup .Net core
+     uses: actions/setup-dotnet@v3
+     with:
+       dotnet-version: '7.0'
+
+   - name: Build Application code
+     run: dotnet build $solutionPath --configuration Release
+
+   - name: Test
+     run: dotnet test $testPath --configuration Release --no-restore --verbosity normal
+
+   - name: Coverage
+     run: |
+       dotnet tool install --global dotnet-coverage
+       cd microservices/scs/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API
+       dotnet-coverage collect -f xml -o coverage.xml dotnet test
+       dotnet tool install -g dotnet-reportgenerator-globaltool
+       reportgenerator -reports:coverage.xml -targetdir:.\report
+
+   - name: Configure AWS credentials
+     uses: aws-actions/configure-aws-credentials@v1
+     with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+   - name: Login to Amazon ECR
+     run: aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin 788148918336.dkr.ecr.ap-east-1.amazonaws.com       
+
+   - name: Build, tag, and push image to Amazon ECR
+     env:
+        ECR_REGISTRY: ${{ steps.ecr-id.outputs.registry }}
+      
+     run: |
+        docker build -t scs:scs microservices/scs/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API        
+        
+        docker tag scs:scs 788148918336.dkr.ecr.ap-east-1.amazonaws.com/$ECR_REPOSITORY:scs
+              
+        docker push 788148918336.dkr.ecr.ap-east-1.amazonaws.com/$ECR_REPOSITORY:scs

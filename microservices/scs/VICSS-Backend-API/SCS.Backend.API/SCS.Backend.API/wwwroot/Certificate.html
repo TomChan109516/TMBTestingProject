@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Transport Department</title>
+    <link rel="stylesheet" href="style.css" media="all" />
+    <style>
+        .center-align {
+            text-align: center
+        }
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <header class="clearfix">
+        </div>
+        <div id="Letter">
+            <h1 class="name center-align">Transport Department</h1>
+            <h2 class="description center-align"> Transport Department Vehicle Examination Complex (MOM Contractor) </h2>
+            <p class="center-align"> Road Traffic Ordience, Cap 374 </p>
+            <h2 class="subheading center-align"> Vehicle Examination Appointment </h2>
+
+            <p>This letter is confirmation of the vehcile examination appointment made in respect of 
+            the below mentioned vehicle which together with its registration document and this letter
+            machine-receipted to show that the examination fee prescribed below, has been paid, 
+            should be preseneted on the date of indicated below.</p>
+
+            <div class="two-columns">
+                <div>
+                    The appointment shown below has been made for your vehicle</div>
+            <div><h2>AM1</h2>
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div>
+                    Registration Mark {{
+VehicleInformation.RegMark</div>
+            <div>Appointment No. ${VehicleInformation.AppointmentNo}
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div>Chassis No. {{VehicleInformation.ChassisNumber}}</div>
+                <div>Security Code {{VehicleInformation.Security Code}}</div>
+            </div>
+
+            <div class="two-columns">
+                <div> Vehicle Class {{VehicleInformation.Vehicle}}</div>
+                <div>Time {{VehicleInformation.Time}}</div>
+            </div>
+
+            <div class="two-columns">
+                <div>Examination Date (D/M/Y){{VehicleInformation.Examination Date}}</div>
+                <div>Fee.HSK {{VehicleInformation.Fees.HKS}}</div>
+            </div>
+
+            <div class="two-columns">
+                <div>Reason For Examination{{VehicleInformation.Reason For Examination}}</div>
+                <div>Lane {{VehicleInformation.Lane}}</div>
+            </div>
+
+            <p class="center-align"> Examination Center: Transport Department Vehicle Examination Complex (MOM Contractor) </p>
+            <p class="center-align"> G/F, 18 Sai Tso Wan Road, Tsing Yi, New Territories </p>
+            <p> Telephone no. 3961 0350 </p>
+            </p>
+            <p> Please comply carefully with the advice on the reverse of this appointment letter. </p>
+        </div>
+        </div>
+        </head>
+        <body>
+            <main>
+                <div id="details" class="clearfix">
+                    <div id="client">
+                        <h2>No Bribery</h2>
+                        <div>Recieved the sum here stated{{Appointment.ExamFees}}</div>
+                        <div>Date: </div>
+                        <div>Recieved the sum here stated:{{Appointment.ExamFees}}</div>
+                        <div>Vehicle Registration Mark / Chassis Number{{VehicleInformtion.RegMark}} {{VehicleInformation.ChassisNo.}}</div>
+                    </div>
+                    <div>Reason For Examination {{Appointment.PrimaryExamCode}}</div>
+                    <div>Vehicle Class {{VehicleInformation.VehicleClassId}}</div>
+                    <div class="two-columns">
+                        <div>Appointment Number / Security Code {{Appointment.AppointmentNumber}}</div>
+                        <p> Please do not disclose it to others </p>
+                    </div>
+
+                    <div>Examination Date (D/M/Y) & Time {{Appointment.Date}}</div>
+                    <div>Lane No. {{Appointment.Lane}}</div>
+                </div>
+                </div>
+                <div class="center-align">Proof of Receipt-Retained by the receiving office.</div>
+                <div>Date: </div>
+                </div>
+            </main>
+        </body>
+</html>

@@ -1,0 +1,96 @@
+name: SIT-Microservices-GatewayService-CI
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - sit
+    paths:
+      - 'microservices/vicss/VICSS_Application/GatewayService/**'
+      - 'eks-deploy/SIT-backend-configmap.yaml'
+
+env:
+# set variables and secrets here
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  solutionPath: microservices/vicss/VICSS_Application
+ 
+
+jobs:
+# This workflow contains multiple jobs
+ CI:
+  name: CI deploy
+# The type of runner that the job will run on
+  runs-on: ubuntu-latest  
+  steps:
+# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+   - name: Checkout Repository
+     uses: actions/checkout@v3
+
+   - name: Fail if PR is not from development branch
+     run: |
+         if [[ "${{ github.head_ref }}" != "development" ]]; then
+            echo "Pull request must be from the 'development' branch"
+            exit 1
+         fi 
+
+    # - name: Check for JIRA ID in PR Description and Title
+   #   run: |
+   #        PR_TITLE="${{ github.event.pull_request.title }}"
+   #        PR_DESCRIPTION="${{ github.event.pull_request.body }}"
+          
+   #        if [[ ! "$PR_TITLE" =~ ([A-Z]+-[0-9]+) ]]; then
+   #          echo "Error: No JIRA ID found in PR Title"
+   #          exit 1
+   #        fi
+   #        JIRA_ID_TITLE=${BASH_REMATCH[1]}
+   #        echo "Found JIRA ID in title: $JIRA_ID_TITLE"
+   #        echo "JIRA_ID_TITLE=$JIRA_ID_TITLE" >> $GITHUB_ENV
+          
+   #        if [[ ! "$PR_DESCRIPTION" =~ ([A-Z]+-[0-9]+) ]]; then
+   #          echo "Error: No JIRA ID found in PR Description"
+   #          exit 1
+   #        fi
+   #        JIRA_ID_DESCRIPTION=${BASH_REMATCH[1]}
+   #        echo "Found JIRA ID in description: $JIRA_ID_DESCRIPTION"
+   #        echo "JIRA_ID_DESCRIPTION=$JIRA_ID_DESCRIPTION" >> $GITHUB_ENV
+          
+
+   # - name: Validate JIRA ID
+   #   env:
+   #        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+   #        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+   #        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+   #   run: |
+   #        RESPONSE_TITLE=$(curl --user "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+   #          --url "$JIRA_BASE_URL/rest/api/2/issue/${{ env.JIRA_ID_TITLE }}" \
+   #          --write-out "%{http_code}" --silent --output /dev/null)
+   #        echo "RESPONSE_TITLE= $RESPONSE_TITLE"
+   #        if [[ "$RESPONSE_TITLE" -ne 200 ]]; then
+   #          echo "Error: JIRA ID ${{ env.JIRA_ID_TITLE }} in title does not exist"
+   #          exit 1
+   #        fi
+          
+   #        RESPONSE_DESCRIPTION=$(curl --user "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+   #          --url "$JIRA_BASE_URL/rest/api/2/issue/${{ env.JIRA_ID_DESCRIPTION }}" \
+   #          --write-out "%{http_code}" --silent --output /dev/null)
+   #        echo "RESPONSE_DESCRIPTION= $RESPONSE_DESCRIPTION"
+   #        if [[ "$RESPONSE_DESCRIPTION" -ne 200 ]]; then
+   #          echo "Error: JIRA ID ${{ env.JIRA_ID_DESCRIPTION }} in description does not exist"
+   #          exit 1
+   #        fi
+
+       
+   - name: Setup .Net core
+     uses: actions/setup-dotnet@v3
+     with:
+       dotnet-version: '8.0'
+
+   - name: Build Application code
+     run: dotnet build $solutionPath --configuration Release
+
+   - name: Coverage
+     run: |
+       dotnet tool install --global dotnet-coverage
+       cd $solutionPath/GatewayService
+       dotnet-coverage collect -f xml -o coverage.xml dotnet test
+       dotnet tool install -g dotnet-reportgenerator-globaltool
+       reportgenerator -reports:coverage.xml -targetdir:.\report

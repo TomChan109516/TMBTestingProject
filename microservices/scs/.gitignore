@@ -1,0 +1,65 @@
+
+*.vsidx
+/VICSS-Backend-API/.vs
+/.vs
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/es
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/fr
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/it
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/ja
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/ko
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/pl
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/pt-BR
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0/cs
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/bin/Debug/net6.0
+/VICSS-Backend-API/SCS Backend API/.vs/SCS Backend API/config
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/bin/Debug/net6.0
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/bin/Debug/net6.0
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj
+*.json
+*.props
+*.targets
+*.cache
+/VICSS-Backend-API/SCS Backend API/SCS API Unit Tests/obj/Debug/net6.0
+/VICSS-Backend-API/SCS Backend API/SCS Backend API/obj/Debug/net6.0
+*.v2
+*.lock
+*.suo
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/bin/Debug/net6.0
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/bin/Debug/net6.0
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj
+*.json
+*.props
+*.targets
+*.cache
+/VICSS-Backend-API/SCS.Backend.API/.vs/SCS.Backend.API/DesignTimeBuild/.dtbcache.v2
+/VICSS-Backend-API/SCS.Backend.API/.vs/SCS.Backend.API/v17/.futdcache.v2
+/VICSS-Backend-API/SCS.Backend.API/.vs/SCS.Backend.API/v17/.suo
+/VICSS-Backend-API/SCS.Backend.API/.vs/ProjectEvaluation/scs.backend.api.metadata.v7.bin
+/VICSS-Backend-API/SCS.Backend.API/.vs/ProjectEvaluation/scs.backend.api.projects.v7.bin
+/VICSS-Backend-API/SCS.Backend.API/.vs/SCS.Backend.API/DesignTimeBuild/.dtbcache.v2
+/VICSS-Backend-API/SCS.Backend.API/.vs/SCS.Backend.API/v17/.suo
+/VICSS-Backend-API/SCS.Backend.API/.vs/SCS.Backend.API/v17/.futdcache.v2
+/VICSS-Backend-API/SCS.Backend.API/.vs
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/bin/Debug/net6.0
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/bin/Debug/net6.0
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj/Debug/net6.0
+*.props
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj/project.assets.json
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj/project.nuget.cache
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj/SCS API Unit Tests.csproj.nuget.dgspec.json
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj/SCS API Unit Tests.csproj.nuget.g.targets
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj/SCS.API.UnitTests.csproj.nuget.dgspec.json
+/VICSS-Backend-API/SCS.Backend.API/SCS.API.UnitTests/obj/SCS.API.UnitTests.csproj.nuget.g.targets
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj/Debug/net6.0
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj/project.assets.json
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj/project.nuget.cache
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj/SCS Backend API.csproj.nuget.dgspec.json
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj/SCS Backend API.csproj.nuget.g.targets
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj/SCS.Backend.API.csproj.nuget.dgspec.json
+/VICSS-Backend-API/SCS.Backend.API/SCS.Backend.API/obj/SCS.Backend.API.csproj.nuget.g.targets
+/VICSS-Backend-API/SCS Backend API/.vs
+/VICSS-Backend-API/SCS Backend API/SCS Backend API/bin/Debug/net6.0

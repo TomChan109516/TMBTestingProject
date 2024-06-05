@@ -1,0 +1,9 @@
+global using Xunit;
+global using AutoMapper;
+global using Moq;
+global using VICSS.Infrastructure.DataAccess.Context;
+global using VICSS.Infrastructure.DataAccess.Entities.Centre;
+global using VICSS.Infrastructure.DataAccess.Repositories.Interface;
+global using VICSS.Service.CentreManagement.Domain;
+global using VICSS.Service.CentreManagement.EventHandlers;
+global using VICSS.Service.CentreManagement.Mappers;

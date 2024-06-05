@@ -1,0 +1,10 @@
+global using Xunit;
+global using AutoMapper;
+global using Moq;
+global using VICSS.Infrastructure.DataAccess.Context;
+global using VICSS.Infrastructure.DataAccess.Entities.Vehicle;
+global using VICSS.Infrastructure.DataAccess.Repositories.Interface;
+global using VICSS.Service.Vehicle.Domain;
+global using VICSS.Service.Vehicle.EventHandlers;
+global using VICSS.Service.Vehicle.Mappers;
+global using System.Linq.Expressions;
